@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Main</title>
+</head>
+<body>
+    <div>
+        <h3>Ranking</h3>
+        <a href="/Home/Battle/">Add battle</a>
+        <a href="/Home/Chempionsip/">Chempionsip</a>
+        <table>
+            <tr>
+                <td><p>Ranking</p></td>
+                <td><p>Name</p></td>
+                <td><p>NumberOfBattle</p></td>
+                <td></td>
+            </tr>
+            @foreach (var r in ViewBag.Chempionsip)
+            {
+                <tr>
+                    <td><p>@r.Ranking</p></td>
+                    <td><p>@r.Name</p></td>
+                    <td><p>@r.NumberOfBattle</p></td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
