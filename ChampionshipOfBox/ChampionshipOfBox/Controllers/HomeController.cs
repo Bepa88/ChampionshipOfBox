@@ -43,7 +43,7 @@ namespace ChampionshipOfBox.Controllers
             return View("Chempionsip");
         }
 
-        public string GetData()
+        public string GetBattle()
         {
             IEnumerable<Battle> battles = db.Battle;
             return JsonConvert.SerializeObject(battles);
