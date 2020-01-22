@@ -258,7 +258,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
-    <Content Include="Views\Home\Battle2.cshtml" />
     <Content Include="Views\Home\Chempionsip.cshtml" />
     <Content Include="Views\Home\Battle.cshtml" />
   </ItemGroup>

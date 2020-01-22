@@ -6,3 +6,5 @@
 /**/.vs/ChampionshipOfBox
 /**/obj
 /**/packages
+*.dbmdl
+*.jfm

@@ -10,39 +10,116 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.13.5/js/jquery.jqgrid.min.js"></script>
+    <link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
 </head>
 <body>
     <h2>Chempionsip</h2>
+    <a href="/Home/Main/">Ranking</a>
     <table id="jqg"></table>
+    <div id="jpager"></div>
     <script type="text/javascript">
 $(document).ready(function () {
     $("#jqg").jqGrid({
         url: '@Url.Action("GetData")',
+        @*editurl: '@Url.Action("Edit")',*@
         datatype: "json",
-        colNames: ['Date of battle', 'Boxer 1 (winner)', 'Boxer 1', 'Referee Points'],
+        colNames: ['ID', 'Date of battle', 'Boxer 1 (winner)', 'Boxer 1', 'Referee Points'],
         colModel: [
+        { name: 'Id',editable: true, editoptions: { readonly: "readonly" }, index: 'ID1', width: 150, sortable: true},
         { name: 'BattleDateTime', index: 'BattleDateTime', width: 150,
-		formatter : 'date', formatoptions: { srcformat : 'Y-m-d H:i:s', newformat :'ShortDate'} },
-        { name: 'Winner', index: 'Winner', width: 150, sortable: true},
-        { name: 'Loser', index: 'Loser', width: 150, sortable: true },
-        { name: 'RefereePoints', index: 'RefereePoints', width: 150, sortable:false }
+		formatter : 'date',editable: true, formatoptions: { srcformat : 'Y-m-d H:i:s', newformat :'ShortDate'} },
+        { name: 'Winner', editable: true, index: 'Winner', width: 150, sortable: true},
+        { name: 'Loser',editable: true, index: 'Loser', width: 150, sortable: true },
+        { name: 'RefereePoints',editable: true, index: 'RefereePoints', width: 150, sortable:false }
         ],
-        rowNum: 5, // число отображаемых строк
-        loadonce:true, // загрузка только один раз
-        sortname: 'Id', // сортировка по умолчанию по столбцу Id
-        sortorder: "desc"
+        rowNum: 10,
+        loadonce:true,
+        sortname: 'Id',
+        sortorder: "desc",
+        reloadAfterSubmit: true,
+        pager: '#jpager'
     });
+
     $("#jqg").jqGrid('navGrid', '#jpager', {
 
-        add: false,
-        del: false,
-        edit: false,
         search: true,
-        searchtext: "Поиск",
-        refresh: true,
-        refreshtext: "Обновить"
+        searchtext: "Search",
+        refresh: false,
+        add: true,
+        del: false,
+        edit: true,
+        view: true,
+        viewtext: "View",
+        viewtitle: "View title",
+        addtext: "Add",
+        edittext: "Edit"
+    },
+    update("edit"),
+    update("add")
+    );
+    function update(act) {
+        return {
+            closeAfterAdd: true,
+            height: 250,
+            width: 400,
+            closeAfterEdit: true,
+            reloadAfterSubmit: true,
+            drag: true,
+            onclickSubmit: function (params) {
+                var list = $("#jqg");
+                var selectedRow = list.getGridParam("selrow");
+                rowData = list.getRowData(selectedRow);
+                if (act === "add")
+                    params.url= '@Url.Action("Create")';
+                else if (act === "edit")
+                    params.url = '@Url.Action("Edit")';
+            },
+            afterSubmit: function (response, postdata) {
+                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid')
+                return [true, "", 0]
+            }
+        };
+    };
+
+    //$('#jqg').navGrid('#jpager',
+    //    // the buttons to appear on the toolbar of the grid
+    //    { edit: true, add: true, del: false, search: true, refresh: false, view: true, position: "left", cloneToTop: false },
+    //            // options for the Edit Dialog
+    //            {
+    //                editCaption: "The Edit Dialog",
+    //                recreateForm: true,
+				//	beforeSubmit : function( postdata, form , oper) {
+    //                    if (confirm('Are you sure you want to update this row?')) {
+				//			return [true,''];
+				//		} else {
+				//			return [false, 'You can not submit!'];
+    //                    }
+				//	},
+    //                closeAfterEdit: true,
+    //                errorTextFormat: function (data) {
+    //                    return 'Error: ' + data.responseText
+    //                },
+    //                afterSubmit: function (response, postdata) {
+    //            $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid')
+    //            return [true, "", 0]
+    //        }
+    //            },
+    //            // options for the Add Dialog
+    //            {
+    //                closeAfterAdd: true,
+    //                recreateForm: true,
+    //                errorTextFormat: function (data) {
+    //                    return 'Error: ' + data.responseText
+    //                }
+    //            },
+    //            // options for the Delete Dailog
+    //            {
+    //                errorTextFormat: function (data) {
+    //                    return 'Error: ' + data.responseText
+    //                }
+    //            });
     });
-});
+
     </script>
 </body>
 </html>
